@@ -311,7 +311,7 @@ int _main(struct thread *td) {
 		write(sf, (void*)dump, KERNEL_CHUNK_SIZE);
 		if (i >= (percent+10)*KERNEL_CHUNK_NUMBER/100) {
 			percent += 10;
-			printf_notification("Kernel dumping to USB\nDone: %i\%%", percent);
+			printf_notification("Kernel dumping to USB\nDone: %i%%", percent);
 		}
 #endif
 		pos = pos + KERNEL_CHUNK_SIZE;
