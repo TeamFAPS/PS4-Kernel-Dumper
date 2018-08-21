@@ -32,7 +32,7 @@
 #define KERN_405_BZERO			0x286C30
 #define KERN_455_BZERO			0x14A570
 #define KERN_501_BZERO			0x1EA360
-#define KERN_505_BZERO			0x1EA510
+#define KERN_505_BZERO			0x1EA470
 
 
 #endif
