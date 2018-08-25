@@ -121,7 +121,7 @@ int kpayload_jailbreak(struct thread *td, struct kpayload_jailbreak_args* args) 
 	
 	// sceSblACMgrGetDeviceAccessType
 	uint64_t *sceProcessAuthorityId = (uint64_t *)(((char *)td_ucred) + 88);
-	*sceProcessAuthorityId = 0x3801000000000013; // Max userland paid
+	*sceProcessAuthorityId = 0x3800000000000010; // SceShellcore paid
 	
 	// sceSblACMgrHasSceProcessCapability
 	uint64_t *sceProcCap = (uint64_t *)(((char *)td_ucred) + 104);
@@ -178,8 +178,7 @@ int kpayload_kernel_dumper(struct thread *td, struct kpayload_kernel_dumper_args
 	void* kernel_base;
 	
 	int (*copyout)(const void *kaddr, void *uaddr, size_t len);
-	void (*bzero)(void *b, size_t len);
-
+	
 	uint64_t fw_version = args->kpayload_kernel_dumper_info->fw_version;
 	
 	if (fw_version == 0x405) {
@@ -189,7 +188,6 @@ int kpayload_kernel_dumper(struct thread *td, struct kpayload_kernel_dumper_args
 		// Kernel functions resolving
 		//int (*printfkernel)(const char *fmt, ...) = (void *)(kernel_base + KERN_405_PRINTF);
 		copyout = (void *)(kernel_base + KERN_405_COPYOUT);
-		bzero = (void *)(kernel_base + KERN_405_BZERO);
 	} else if (fw_version == 0x455) {
 		// Kernel base resolving
 		kernel_base = &((uint8_t*)__readmsr(0xC0000082))[-KERN_455_XFAST_SYSCALL];
@@ -197,7 +195,6 @@ int kpayload_kernel_dumper(struct thread *td, struct kpayload_kernel_dumper_args
 		// Kernel functions resolving
 		//int (*printfkernel)(const char *fmt, ...) = (void *)(kernel_base + KERN_455_PRINTF);
 		copyout = (void *)(kernel_base + KERN_455_COPYOUT);
-		bzero = (void *)(kernel_base + KERN_455_BZERO);
 	} else if (fw_version == 0x501) {
 		// Kernel base resolving
 		kernel_base = &((uint8_t*)__readmsr(0xC0000082))[-KERN_501_XFAST_SYSCALL];
@@ -205,7 +202,6 @@ int kpayload_kernel_dumper(struct thread *td, struct kpayload_kernel_dumper_args
 		// Kernel functions resolving
 		//int (*printfkernel)(const char *fmt, ...) = (void *)(kernel_base + KERN_501_PRINTF);
 		copyout = (void *)(kernel_base + KERN_501_COPYOUT);
-		bzero = (void *)(kernel_base + KERN_501_BZERO);
 	} else if (fw_version == 0x505) {
 		// Kernel base resolving
 		kernel_base = &((uint8_t*)__readmsr(0xC0000082))[-KERN_505_XFAST_SYSCALL];
@@ -213,7 +209,6 @@ int kpayload_kernel_dumper(struct thread *td, struct kpayload_kernel_dumper_args
 		// Kernel functions resolving
 		//int (*printfkernel)(const char *fmt, ...) = (void *)(kernel_base + KERN_505_PRINTF);
 		copyout = (void *)(kernel_base + KERN_505_COPYOUT);
-		bzero = (void *)(kernel_base + KERN_505_BZERO);
 	} else return -1;
 
 	// Pull in arguments
@@ -226,8 +221,8 @@ int kpayload_kernel_dumper(struct thread *td, struct kpayload_kernel_dumper_args
 
 	// If mapping doesn't exist then zero out that memory
 	if (cpRet == -1) {
-		//printfkernel("bzero at 0x%016llx\n", kaddr);
-		bzero((uint64_t*)uaddr, size);
+		//printfkernel("zero out userland memory at 0x%016llx\n", kaddr);
+		memset((uint64_t*)uaddr, 0, size);
 	}
 	
 	return cpRet;
