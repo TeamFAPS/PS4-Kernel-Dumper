@@ -40,6 +40,12 @@ int kpayload_get_fw_version(struct thread *td, struct kpayload_get_fw_version_ar
 			fw_version = 0x455;
 			copyout = (void *)(kernel_base + KERN_455_COPYOUT);
 		}
+	} else if (!memcmp((char*)(&((uint8_t*)__readmsr(0xC0000082))[-KERN_474_XFAST_SYSCALL]), (char[4]){0x7F, 0x45, 0x4C, 0x46}, 4)) {
+		kernel_base = &((uint8_t*)__readmsr(0xC0000082))[-KERN_474_XFAST_SYSCALL];
+		if (!memcmp((char*)(kernel_base+KERN_474_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
+			fw_version = 0x474;
+			copyout = (void *)(kernel_base + KERN_474_COPYOUT);
+		}
 	} else if (!memcmp((char*)(&((uint8_t*)__readmsr(0xC0000082))[-KERN_405_XFAST_SYSCALL]), (char[4]){0x7F, 0x45, 0x4C, 0x46}, 4)) {
 		kernel_base = &((uint8_t*)__readmsr(0xC0000082))[-KERN_405_XFAST_SYSCALL];
 		if (!memcmp((char*)(kernel_base+KERN_405_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
@@ -76,7 +82,7 @@ int kpayload_jailbreak(struct thread *td, struct kpayload_jailbreak_args* args) 
 
 		// Kernel pointers resolving
 		kernel_ptr = (uint8_t*)kernel_base;
-		got_prison0 =   (void**)&kernel_ptr[KERN_405_PRISON_0];
+		got_prison0 = (void**)&kernel_ptr[KERN_405_PRISON_0];
 		got_rootvnode = (void**)&kernel_ptr[KERN_405_ROOTVNODE];
 	} else if (fw_version == 0x455) {
 		// Kernel base resolving
@@ -84,15 +90,23 @@ int kpayload_jailbreak(struct thread *td, struct kpayload_jailbreak_args* args) 
 
 		// Kernel pointers resolving
 		kernel_ptr = (uint8_t*)kernel_base;
-		got_prison0 =   (void**)&kernel_ptr[KERN_455_PRISON_0];
+		got_prison0 = (void**)&kernel_ptr[KERN_455_PRISON_0];
 		got_rootvnode = (void**)&kernel_ptr[KERN_455_ROOTVNODE];
+	} else if (fw_version == 0x474) {
+		// Kernel base resolving
+		kernel_base = &((uint8_t*)__readmsr(0xC0000082))[-KERN_474_XFAST_SYSCALL];
+
+		// Kernel pointers resolving
+		kernel_ptr = (uint8_t*)kernel_base;
+		got_prison0 = (void**)&kernel_ptr[KERN_474_PRISON_0];
+		got_rootvnode = (void**)&kernel_ptr[KERN_474_ROOTVNODE];
 	} else if (fw_version == 0x501) {
 		// Kernel base resolving
 		kernel_base = &((uint8_t*)__readmsr(0xC0000082))[-KERN_501_XFAST_SYSCALL];
 
 		// Kernel pointers resolving
 		kernel_ptr = (uint8_t*)kernel_base;
-		got_prison0 =   (void**)&kernel_ptr[KERN_501_PRISON_0];
+		got_prison0 = (void**)&kernel_ptr[KERN_501_PRISON_0];
 		got_rootvnode = (void**)&kernel_ptr[KERN_501_ROOTVNODE];
 	} else if (fw_version == 0x505) {
 		// Kernel base resolving
@@ -100,7 +114,7 @@ int kpayload_jailbreak(struct thread *td, struct kpayload_jailbreak_args* args) 
 
 		// Kernel pointers resolving
 		kernel_ptr = (uint8_t*)kernel_base;
-		got_prison0 =   (void**)&kernel_ptr[KERN_505_PRISON_0];
+		got_prison0 = (void**)&kernel_ptr[KERN_505_PRISON_0];
 		got_rootvnode = (void**)&kernel_ptr[KERN_505_ROOTVNODE];
 	} else return -1;
 	
@@ -151,6 +165,12 @@ int kpayload_get_kbase(struct thread *td, struct kpayload_get_kbase_args* args) 
 		
 		// Kernel functions resolving
 		copyout = (void *)(kernel_base + KERN_455_COPYOUT);
+	} else if (fw_version == 0x474) {
+		// Kernel base resolving
+		kernel_base = &((uint8_t*)__readmsr(0xC0000082))[-KERN_474_XFAST_SYSCALL];
+		
+		// Kernel functions resolving
+		copyout = (void *)(kernel_base + KERN_474_COPYOUT);
 	} else if (fw_version == 0x501) {
 		// Kernel base resolving
 		kernel_base = &((uint8_t*)__readmsr(0xC0000082))[-KERN_501_XFAST_SYSCALL];
@@ -195,6 +215,13 @@ int kpayload_kernel_dumper(struct thread *td, struct kpayload_kernel_dumper_args
 		// Kernel functions resolving
 		//int (*printfkernel)(const char *fmt, ...) = (void *)(kernel_base + KERN_455_PRINTF);
 		copyout = (void *)(kernel_base + KERN_455_COPYOUT);
+	} else if (fw_version == 0x474) {
+		// Kernel base resolving
+		kernel_base = &((uint8_t*)__readmsr(0xC0000082))[-KERN_474_XFAST_SYSCALL];
+		
+		// Kernel functions resolving
+		//int (*printfkernel)(const char *fmt, ...) = (void *)(kernel_base + KERN_474_PRINTF);
+		copyout = (void *)(kernel_base + KERN_474_COPYOUT);
 	} else if (fw_version == 0x501) {
 		// Kernel base resolving
 		kernel_base = &((uint8_t*)__readmsr(0xC0000082))[-KERN_501_XFAST_SYSCALL];
