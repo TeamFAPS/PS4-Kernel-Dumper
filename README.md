@@ -4,7 +4,7 @@ Cross-compatible with PS4 on 4.05, 4.55, 4.74, 5.01 and 5.05.
 
 ## USB dumping mode
 
-Launch the payload. Connect an USB storage device. Follow the instructions on screen.
+Launch the payload. Connect a USB storage device. Follow the instructions on the screen.
 
 ## Socket dumping mode
 
@@ -16,11 +16,11 @@ On PC you can do to listen:
 Then in a new cmd line, to send the payload:
 	socat -u FILE:PS4-Kernel-Dumper.bin TCP:"PS4 IP":9020
 
-You can then trim out the socket prints or you could adapt it with 2 sockets, one for dumping, another for logging.
+You can then trim out the socket prints, or you could adapt it with 2 sockets, one for dumping, another for logging.
 
 ## Building
 
-To compile you have to use an updated payload sdk. For exemple: https://github.com/xvortex/ps4-payload-sdk
+To compile you have to use an updated payload SDK. For example: https://github.com/xvortex/ps4-payload-sdk
 
 ## Credits
 
