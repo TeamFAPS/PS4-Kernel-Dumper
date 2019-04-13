@@ -1,6 +1,6 @@
 # PS4 Kernel Dumper
 
-Cross-compatible with PS4 on 4.05, 4.55, 4.74, 5.01 and 5.05.
+Cross-compatible with PS4 on 3.55, 4.05, 4.55, 4.74, 5.01 and 5.05.
 
 ## USB dumping mode
 
@@ -24,10 +24,10 @@ To compile you have to use an updated payload SDK. For example: https://github.c
 
 ## Credits
 
-* CelesteBlue for the rewriting (USB + cross FW compatibility)
-* WildCard for his functional code
-* Shadow for the copyout trick
-* xvortex for the updated PS4 payload SDK
-* CTurt for his PS4 payload SDK
-* Specter for his Code Execution method and implementation
-* qwertyoruiopz for his webkit and kernel exploits
+* CelesteBlue for rewriting (USB + cross FW compatibility)
+* WildCard for functional code
+* Shadow for copyout trick
+* xvortex for updated PS4 payload SDK
+* CTurt for PS4 payload SDK
+* Specter for Code Execution method and implementation
+* qwertyoruiopz for webkit and kernel exploits
