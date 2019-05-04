@@ -19,7 +19,7 @@ OBJS	:=	$(patsubst $(SDIR)/%.c, $(ODIR)/%.o, $(CFILES)) $(patsubst $(SDIR)/%.s, 
 
 LIBS	:=	-lPS4
 
-TARGET = $(shell basename $(CURDIR)).bin
+TARGET = $(shell basename $(CURDIR))-USB.bin
 
 $(TARGET): $(ODIR) $(OBJS)
 	$(CC) $(LIBPS4)/crt0.s $(ODIR)/*.o -o temp.t $(CFLAGS) $(LFLAGS) $(LIBS)
