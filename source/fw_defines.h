@@ -5,8 +5,8 @@
 // order: (to avoid kernel panic by reading not allocated memory)
 #define KERN_101_XFAST_SYSCALL		0x4572E0	// #8
 #define KERN_176_XFAST_SYSCALL		0x3FF260	// #7
-#define KERN_355_XFAST_SYSCALL		0x3A1F10	// #6
 #define KERN_350_XFAST_SYSCALL		0x3A1AD0	// #5
+#define KERN_355_XFAST_SYSCALL		0x3A1F10	// #6
 #define	KERN_405_XFAST_SYSCALL		0x30EB30	// #4
 #define	KERN_455_XFAST_SYSCALL		0x3095D0	// #2
 #define	KERN_474_XFAST_SYSCALL		0x30B7D0	// #3
