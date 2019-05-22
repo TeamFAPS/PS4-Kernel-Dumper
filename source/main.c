@@ -20,19 +20,19 @@
 #define KERNEL_CHUNK_SIZE	0x1000
 #define KERNEL_CHUNK_NUMBER	0x69B8
 
-#define notification(...) \
-	do { \
-		char message[256]; \
-		snprintf(message, sizeof(message), ##__VA_ARGS__); \
-		send_system_notification_with_text(message); \
+#define notification(...) 									\
+	do { 													\
+		char message[256]; 									\
+		snprintf(message, sizeof(message), ##__VA_ARGS__);	\
+		send_system_notification_with_text(message); 		\
 	} while (0)
 
 #ifdef DEBUG_SOCKET
-#define socket(format, ...)\
-	do {\
-		char buffer[512];\
-		int size = sprintf(buffer, format, ##__VA_ARGS__);\
-		sceNetSend(sock, buffer, size, 0);\
+#define socket(format, ...)									\
+	do {													\
+		char buffer[512];									\
+		int size = sprintf(buffer, format, ##__VA_ARGS__);	\
+		sceNetSend(sock, buffer, size, 0);					\
 	} while(0)
 
 #define IP(a, b, c, d) (((a) << 0) + ((b) << 8) + ((c) << 16) + ((d) << 24))
@@ -101,7 +101,7 @@ int _main(struct thread *td) {
 	
 	while (ret == -1) 
 	{
-		sceKernelUsleep(100*1000);
+		sceKernelUsleep(100 * 1000);
 		
 		if (row >= 60) {
 			notification("No USB storage detected.\nPlease connect it.");
@@ -117,7 +117,7 @@ int _main(struct thread *td) {
 #endif
 	
 	// Allocate a 0x1000 buffer in userland
-	uint64_t* dump = mmap(NULL, 0x1000, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0); 
+	uint64_t *dump = mmap(NULL, 0x1000, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0); 
 	
 	// Loop on our kpayload_kernel_dumper (loop enough to dump up until GPU used memory)
 	uint64_t pos = 0;
@@ -132,12 +132,11 @@ int _main(struct thread *td) {
 #else
 		// Write the userland buffer to USB
 		lseek(ret, pos, SEEK_SET);
-		write(ret, (void*)dump, KERNEL_CHUNK_SIZE);
+		write(ret, (void *)dump, KERNEL_CHUNK_SIZE);
 		
 #endif
-		if (i == 0) {
+		if (i == 0)
 			notification("Kernel successfully dumped!\n\nRebooting...");
-		}
 		
 		pos += KERNEL_CHUNK_SIZE;
 	}
