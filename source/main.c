@@ -38,15 +38,15 @@
 #define IP(a, b, c, d) (((a) << 0) + ((b) << 8) + ((c) << 16) + ((d) << 24))
 #endif
 
-void send_system_notification_with_text(char *message) {
+void send_system_notification_with_text(char *message)
+{
 	char notification_buf[512];
 	sprintf(notification_buf, "%s\n\n\n\n\n\n\n", message);
 	sceSysUtilSendSystemNotificationWithText(0x81, notification_buf);
 }
 
-
-int _main(struct thread *td) {
-	
+int _main(struct thread *td)
+{
 	// Init and resolve libraries
 	initKernel();
 	initLibc();
@@ -75,12 +75,12 @@ int _main(struct thread *td) {
 
 	uint64_t fw_version = get_fw_version();
 	
-	// Patch some things in the kernel (sandbox, prison) to give userland more privileges...
+	// Patch some things in the kernel (sandbox, prison) to give userland more privileges
 	jailbreak(fw_version);
 	
 	uint64_t kernel_base = get_kernel_base(fw_version);
 	
-	// Need the browser to have been jailbreak'ed first
+	// Need the browser to have been jailbroken first
 	initSysUtil(); 
 
 #ifdef DEBUG_SOCKET	
@@ -99,8 +99,7 @@ int _main(struct thread *td) {
 	char saveFile[64];
 	time_t now = time(NULL);
 	
-	while (ret == -1) 
-	{
+	while (ret == -1) {
 		sceKernelUsleep(100 * 1000);
 		
 		if (row >= 60) {
@@ -151,7 +150,6 @@ int _main(struct thread *td) {
 	
 	close(ret);
 	
-	
 #endif
 	
 	munmap(dump, 0x1000);
@@ -159,5 +157,4 @@ int _main(struct thread *td) {
 	syscall(55, 0);
 	
 	return 0;
-	
 }

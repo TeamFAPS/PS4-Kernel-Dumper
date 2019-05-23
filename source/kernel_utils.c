@@ -288,7 +288,6 @@ int kpayload_kernel_dumper(struct thread *td, struct kpayload_kernel_dumper_args
 		memset((uint64_t *)uaddr, 0, size);
 	
 	return ret;
-	
 }
 
 uint64_t get_fw_version(void) {
