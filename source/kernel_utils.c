@@ -104,13 +104,13 @@ int kpayload_jailbreak(struct thread *td, struct kpayload_jailbreak_args *args)
 	switch (fw_version) {
 	case 0x350: 
 		kernel_base   = &((uint8_t *)__readmsr(0xC0000082))[-KERN_350_XFAST_SYSCALL];
-		kernel_ptr	  = (uint8_t *)kernel_base;
+		kernel_ptr    = (uint8_t *)kernel_base;
 		got_prison0   = (void **)&kernel_ptr[KERN_350_PRISON_0];
 		got_rootvnode = (void **)&kernel_ptr[KERN_350_ROOTVNODE];
 		break;
 	case 0x355: 
 		kernel_base   = &((uint8_t *)__readmsr(0xC0000082))[-KERN_355_XFAST_SYSCALL];
-		kernel_ptr	  = (uint8_t *)kernel_base;
+		kernel_ptr    = (uint8_t *)kernel_base;
 		got_prison0   = (void **)&kernel_ptr[KERN_355_PRISON_0];
 		got_rootvnode = (void **)&kernel_ptr[KERN_355_ROOTVNODE];
 		break;
@@ -122,19 +122,19 @@ int kpayload_jailbreak(struct thread *td, struct kpayload_jailbreak_args *args)
 		break;
 	case 0x455:
 		kernel_base   = &((uint8_t *)__readmsr(0xC0000082))[-KERN_455_XFAST_SYSCALL];
-		kernel_ptr	  = (uint8_t *)kernel_base;
+		kernel_ptr    = (uint8_t *)kernel_base;
 		got_prison0   = (void **)&kernel_ptr[KERN_455_PRISON_0];
 		got_rootvnode = (void **)&kernel_ptr[KERN_455_ROOTVNODE];
 		break;
 	case 0x474:
 		kernel_base   = &((uint8_t *)__readmsr(0xC0000082))[-KERN_474_XFAST_SYSCALL];
-		kernel_ptr	  = (uint8_t *)kernel_base;
+		kernel_ptr    = (uint8_t *)kernel_base;
 		got_prison0   = (void **)&kernel_ptr[KERN_474_PRISON_0];
 		got_rootvnode = (void **)&kernel_ptr[KERN_474_ROOTVNODE];
 		break;
 	case 0x500:
 		kernel_base   = &((uint8_t *)__readmsr(0xC0000082))[-KERN_500_XFAST_SYSCALL];
-		kernel_ptr 	  = (uint8_t *)kernel_base;
+		kernel_ptr    = (uint8_t *)kernel_base;
 		got_prison0   = (void **)&kernel_ptr[KERN_500_PRISON_0];
 		got_rootvnode = (void **)&kernel_ptr[KERN_500_ROOTVNODE];
 		break;
@@ -146,7 +146,7 @@ int kpayload_jailbreak(struct thread *td, struct kpayload_jailbreak_args *args)
 		break;
 	case 0x505:
 		kernel_base   = &((uint8_t *)__readmsr(0xC0000082))[-KERN_505_XFAST_SYSCALL];
-		kernel_ptr	  = (uint8_t *)kernel_base;
+		kernel_ptr    = (uint8_t *)kernel_base;
 		got_prison0   = (void **)&kernel_ptr[KERN_505_PRISON_0];
 		got_rootvnode = (void **)&kernel_ptr[KERN_505_ROOTVNODE];
 		break;
@@ -190,23 +190,23 @@ int kpayload_get_kbase(struct thread *td, struct kpayload_get_kbase_args* args)
 	switch(fw_version) {
 	case 0x350: 
 		kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-KERN_350_XFAST_SYSCALL];
-		copyout	    = (void *)(kernel_base + KERN_350_COPYOUT);
+		copyout     = (void *)(kernel_base + KERN_350_COPYOUT);
 		break;
 	case 0x355: 
 		kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-KERN_355_XFAST_SYSCALL];
-		copyout	    = (void *)(kernel_base + KERN_355_COPYOUT);
+		copyout     = (void *)(kernel_base + KERN_355_COPYOUT);
 		break;
 	case 0x405:
 		kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-KERN_405_XFAST_SYSCALL];
-		copyout	    = (void *)(kernel_base + KERN_405_COPYOUT);
+		copyout     = (void *)(kernel_base + KERN_405_COPYOUT);
 		break;
 	case 0x455:
 		kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-KERN_455_XFAST_SYSCALL];
-		copyout	    = (void *)(kernel_base + KERN_455_COPYOUT);
+		copyout     = (void *)(kernel_base + KERN_455_COPYOUT);
 		break;
 	case 0x474:
 		kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-KERN_474_XFAST_SYSCALL];
-		copyout	    = (void *)(kernel_base + KERN_474_COPYOUT);
+		copyout     = (void *)(kernel_base + KERN_474_COPYOUT);
 		break;
 	case 0x500:
 		kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-KERN_500_XFAST_SYSCALL];
@@ -214,11 +214,11 @@ int kpayload_get_kbase(struct thread *td, struct kpayload_get_kbase_args* args)
 		break;
 	case 0x501:
 		kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-KERN_501_XFAST_SYSCALL];
-		copyout	    = (void *)(kernel_base + KERN_501_COPYOUT);
+		copyout     = (void *)(kernel_base + KERN_501_COPYOUT);
 		break;
 	case 0x505:
 		kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-KERN_505_XFAST_SYSCALL];
-		copyout	    = (void *)(kernel_base + KERN_505_COPYOUT);
+		copyout     = (void *)(kernel_base + KERN_505_COPYOUT);
 		break;
 	default:
 		return -1;
@@ -241,35 +241,35 @@ int kpayload_kernel_dumper(struct thread *td, struct kpayload_kernel_dumper_args
 	switch(fw_version) {
 	case 0x350: 
 		kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-KERN_350_XFAST_SYSCALL];
-		copyout	    = (void *)(kernel_base + KERN_350_COPYOUT);
+		copyout     = (void *)(kernel_base + KERN_350_COPYOUT);
 		break;
 	case 0x355: 
 		kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-KERN_355_XFAST_SYSCALL];
-		copyout	    = (void *)(kernel_base + KERN_355_COPYOUT);
+		copyout     = (void *)(kernel_base + KERN_355_COPYOUT);
 		break;
 	case 0x405:
 		kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-KERN_405_XFAST_SYSCALL];
-		copyout	    = (void *)(kernel_base + KERN_405_COPYOUT);
+		copyout     = (void *)(kernel_base + KERN_405_COPYOUT);
 		break;
 	case 0x455:
 		kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-KERN_455_XFAST_SYSCALL];
-		copyout	    = (void *)(kernel_base + KERN_455_COPYOUT);
+		copyout     = (void *)(kernel_base + KERN_455_COPYOUT);
 		break;
 	case 0x474:
 		kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-KERN_474_XFAST_SYSCALL];
-		copyout	    = (void *)(kernel_base + KERN_474_COPYOUT);
+		copyout     = (void *)(kernel_base + KERN_474_COPYOUT);
 		break;
 	case 0x500:
 		kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-KERN_500_XFAST_SYSCALL];
-		copyout	    = (void *)(kernel_base + KERN_500_COPYOUT);
+		copyout     = (void *)(kernel_base + KERN_500_COPYOUT);
 		break;
 	case 0x501:
 		kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-KERN_501_XFAST_SYSCALL];
-		copyout	    = (void *)(kernel_base + KERN_501_COPYOUT);
+		copyout     = (void *)(kernel_base + KERN_501_COPYOUT);
 		break;
 	case 0x505:
 		kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-KERN_505_XFAST_SYSCALL];
-		copyout	    = (void *)(kernel_base + KERN_505_COPYOUT);
+		copyout     = (void *)(kernel_base + KERN_505_COPYOUT);
 		break;
 	default:
 		return -1;
@@ -278,7 +278,7 @@ int kpayload_kernel_dumper(struct thread *td, struct kpayload_kernel_dumper_args
 	// Pull in arguments
 	uint64_t kaddr = args->kpayload_kernel_dumper_info->kaddr;
 	uint64_t uaddr = args->kpayload_kernel_dumper_info->uaddr;
-	size_t size = args->kpayload_kernel_dumper_info->size;
+	size_t size    = args->kpayload_kernel_dumper_info->size;
 
 	// copyout into userland memory from the kaddr we specify...
 	int ret = copyout((uint64_t *)kaddr, (uint64_t *)uaddr, size);

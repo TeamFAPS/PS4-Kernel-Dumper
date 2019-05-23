@@ -20,11 +20,11 @@
 #define KERNEL_CHUNK_SIZE	0x1000
 #define KERNEL_CHUNK_NUMBER	0x69B8
 
-#define notification(...) 									\
-	do { 													\
-		char message[256]; 									\
+#define notification(...)									\
+	do {													\
+		char message[256];									\
 		snprintf(message, sizeof(message), ##__VA_ARGS__);	\
-		send_system_notification_with_text(message); 		\
+		send_system_notification_with_text(message);		\
 	} while (0)
 
 #ifdef DEBUG_SOCKET
@@ -52,9 +52,9 @@ int _main(struct thread *td) {
 	initLibc();
 	initNetwork();
 	initPthread();
-	
+
 #ifdef DEBUG_SOCKET
-	
+
 	// Create our TCP server
 	struct sockaddr_in server;
 	server.sin_len = sizeof(server);
@@ -70,9 +70,9 @@ int _main(struct thread *td) {
 	sceNetSetsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (char *)&flag, sizeof(int));
 	
 	socket("connected\n");
-	
+
 #endif
-	
+
 	uint64_t fw_version = get_fw_version();
 	
 	// Patch some things in the kernel (sandbox, prison) to give userland more privileges...
@@ -82,16 +82,16 @@ int _main(struct thread *td) {
 	
 	// Need the browser to have been jailbreak'ed first
 	initSysUtil(); 
-	
+
 #ifdef DEBUG_SOCKET	
 
 	notification("PS4 Kernel Dumper to socket");
 	
 	socket("PS4 FW version is: 0x%016llx\n", fw_version);
 	socket("kernel base address is: 0x%016llx\n", kernel_base);
-	
+
 #else
-	
+
 	notification("PS4 Kernel Dumper to USB");
 	
 	int ret = -1;
@@ -113,9 +113,9 @@ int _main(struct thread *td) {
 	}
 	
 	notification("USB storage detected.\n\nDumping Kernel to USB...");
-	
+
 #endif
-	
+
 	// Allocate a 0x1000 buffer in userland
 	uint64_t *dump = mmap(NULL, 0x1000, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0); 
 	
@@ -128,13 +128,15 @@ int _main(struct thread *td) {
 
 		// Send the userland buffer to socket
 		sceNetSend(sock, dump, KERNEL_CHUNK_SIZE, 0); 
-		
+
 #else
+
 		// Write the userland buffer to USB
 		lseek(ret, pos, SEEK_SET);
 		write(ret, (void *)dump, KERNEL_CHUNK_SIZE);
-		
+
 #endif
+
 		if (i == 0)
 			notification("Kernel successfully dumped!\n\nRebooting...");
 		
