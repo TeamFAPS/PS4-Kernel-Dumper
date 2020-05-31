@@ -28,7 +28,11 @@ int kpayload_get_fw_version(struct thread *td, struct kpayload_get_fw_version_ar
 		if (!memcmp((char *)(kernel_base + KERN_505_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
 			fw_version = 0x505;
 			copyout = (void *)(kernel_base + KERN_505_COPYOUT);
-		} else if (!memcmp((char *)(kernel_base + KERN_501_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
+		} else if (!memcmp((char *)(kernel_base + KERN_503_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
+			fw_version = 0x503;
+			copyout = (void *)(kernel_base + KERN_503_COPYOUT);
+		}
+		else if (!memcmp((char *)(kernel_base + KERN_501_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
 			fw_version = 0x501;
 			copyout = (void *)(kernel_base + KERN_501_COPYOUT);
 		} else if (!memcmp((char *)(kernel_base + KERN_500_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
@@ -144,6 +148,12 @@ int kpayload_jailbreak(struct thread *td, struct kpayload_jailbreak_args *args)
 		got_prison0   = (void **)&kernel_ptr[KERN_501_PRISON_0];
 		got_rootvnode = (void **)&kernel_ptr[KERN_501_ROOTVNODE];
 		break;
+	case 0x503:
+		kernel_base   = &((uint8_t *)__readmsr(0xC0000082))[-KERN_503_XFAST_SYSCALL];
+		kernel_ptr    = (uint8_t *)kernel_base;
+		got_prison0   = (void **)&kernel_ptr[KERN_503_PRISON_0];
+		got_rootvnode = (void **)&kernel_ptr[KERN_503_ROOTVNODE];
+		break;
 	case 0x505:
 		kernel_base   = &((uint8_t *)__readmsr(0xC0000082))[-KERN_505_XFAST_SYSCALL];
 		kernel_ptr    = (uint8_t *)kernel_base;
@@ -216,6 +226,10 @@ int kpayload_get_kbase(struct thread *td, struct kpayload_get_kbase_args* args)
 		kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-KERN_501_XFAST_SYSCALL];
 		copyout     = (void *)(kernel_base + KERN_501_COPYOUT);
 		break;
+	case 0x503:
+		kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-KERN_503_XFAST_SYSCALL];
+		copyout     = (void *)(kernel_base + KERN_503_COPYOUT);
+		break;
 	case 0x505:
 		kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-KERN_505_XFAST_SYSCALL];
 		copyout     = (void *)(kernel_base + KERN_505_COPYOUT);
@@ -266,6 +280,10 @@ int kpayload_kernel_dumper(struct thread *td, struct kpayload_kernel_dumper_args
 	case 0x501:
 		kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-KERN_501_XFAST_SYSCALL];
 		copyout     = (void *)(kernel_base + KERN_501_COPYOUT);
+		break;
+	case 0x503:
+		kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-KERN_503_XFAST_SYSCALL];
+		copyout     = (void *)(kernel_base + KERN_503_COPYOUT);
 		break;
 	case 0x505:
 		kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-KERN_505_XFAST_SYSCALL];
