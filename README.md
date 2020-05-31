@@ -1,6 +1,6 @@
 # PS4 Kernel Dumper
 
-Cross-compatible with PS4 on 3.50, 3.51, 3.55, 4.05, 4.55, 4.74, 5.00, 5.01, 5.05 and 5.07.
+Cross-compatible with PS4 on 3.50, 3.51, 3.55, 4.05, 4.55, 4.74, 5.00, 5.01, 5.03, 5.05 and 5.07.
 
 ## USB dumping mode
 
