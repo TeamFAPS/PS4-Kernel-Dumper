@@ -59,7 +59,7 @@ int _main(struct thread *td)
 	struct sockaddr_in server;
 	server.sin_len = sizeof(server);
 	server.sin_family = AF_INET;
-	server.sin_addr.s_addr = IP(192, 168, 1, 189);
+	server.sin_addr.s_addr = IP(192, 168, 0, 19);
 	server.sin_port = sceNetHtons(9023);
 	memset(server.sin_zero, 0, sizeof(server.sin_zero));
 	
@@ -111,7 +111,7 @@ int _main(struct thread *td)
 		ret = open(saveFile, O_WRONLY | O_CREAT | O_TRUNC, 0777);	 
 	}
 	
-	notification("USB storage detected.\n\nDumping Kernel to USB. Please wait as this might take a while...");
+	notification("USB storage detected.\n\nDumping Kernel to USB...");
 
 #endif
 
@@ -135,11 +135,12 @@ int _main(struct thread *td)
 		write(ret, (void *)dump, KERNEL_CHUNK_SIZE);
 
 #endif
+
+		if (i == 0)
+			notification("Kernel successfully dumped!\n\nRebooting...");
 		
 		pos += KERNEL_CHUNK_SIZE;
 	}
-	
-	notification("Kernel successfully dumped!\n\nRebooting...");
 
 #ifdef DEBUG_SOCKET
 
